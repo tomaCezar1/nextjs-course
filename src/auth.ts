@@ -24,6 +24,7 @@ export const {
     }),
   ],
   callbacks: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session, user }: any) {
       if (session && user) {
         session.user.id = user.id;
