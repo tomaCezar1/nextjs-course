@@ -10,9 +10,12 @@ import {
   Textarea,
 } from '@nextui-org/react';
 import { startTransition, useActionState } from 'react';
+import FormButton from '../common/form-button';
 
 const TopicCreateForm = () => {
-  const [formState, action] = useActionState(createTopic, { errors: {} });
+  const [formState, action, isPending] = useActionState(createTopic, {
+    errors: {},
+  });
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -49,9 +52,7 @@ const TopicCreateForm = () => {
               isInvalid={!!formState.errors.description}
               errorMessage={formState.errors.description?.join(', ')}
             />
-            <Button type="submit" color="primary">
-              Submit
-            </Button>
+            <FormButton isLoading={isPending}>Submit</FormButton>
           </div>
         </form>
       </PopoverContent>
