@@ -16,7 +16,7 @@ const TopicPage = async ({ params }: TopicPageProps) => {
       </div>
 
       <div>
-        <PostCreateForm />
+        <PostCreateForm slug={slug} />
       </div>
     </div>
   );
