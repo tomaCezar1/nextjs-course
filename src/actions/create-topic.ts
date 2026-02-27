@@ -1,5 +1,6 @@
 'use server';
 
+import { db } from '@/db';
 import { z } from 'zod';
 
 const createTopicSchema = z.object({
@@ -31,6 +32,21 @@ export async function createTopic(
   if (!result.success) {
     return {
       errors: result.error.flatten().fieldErrors,
+    };
+  }
+
+  try {
+    await db.topic.create({
+      data: {
+        slug: result.data.name,
+        description: result.data.description,
+      },
+    });
+  } catch (error: unknown) {
+    return {
+      errors: {
+        name: ['Failed to create topic.'],
+      },
     };
   }
 
