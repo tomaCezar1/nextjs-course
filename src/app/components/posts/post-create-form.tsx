@@ -7,11 +7,18 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Textarea,
 } from '@nextui-org/react';
 import FormButton from '../common/form-button';
+import { createPost } from '@/actions';
 
-const PostCreateForm = () => {
-  const [formState, action, isPending] = useActionState();
+const PostCreateForm = ({ slug }: { slug: string }) => {
+  const [formState, action, isPending] = useActionState(
+    createPost.bind(null, slug),
+    {
+      errors: {},
+    },
+  );
 
   return (
     <Popover placement="left">
@@ -20,7 +27,7 @@ const PostCreateForm = () => {
       </PopoverTrigger>
 
       <PopoverContent>
-        <form action={}>
+        <form action={action}>
           <div className="flex flex-col gap-4 p-4 w-80">
             <h3 className="text-lg">Create a post</h3>
             <Input
@@ -28,13 +35,18 @@ const PostCreateForm = () => {
               label="Title"
               labelPlacement="outside"
               placeholder="title"
+              isInvalid={!!formState.errors.title}
+              errorMessage={formState.errors.title?.join(', ')}
             />
-            <Input
+            <Textarea
               name="content"
               label="Content"
               labelPlacement="outside"
               placeholder="content"
+              isInvalid={!!formState.errors.content}
+              errorMessage={formState.errors.content?.join(', ')}
             />
+            {formState.errors._form?.join(',  ')}
             <FormButton isLoading={isPending}>Create Post</FormButton>
           </div>
         </form>
